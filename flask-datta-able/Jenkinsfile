@@ -1,0 +1,36 @@
+pipeline {
+    agent any
+
+    environment {
+        // Define environment variables here
+        DOCKER_IMAGE = 'flask-datta-able:latest'
+        REGISTRY = 'tilin.azurecr.io'
+    }
+
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Building Docker Image'
+                script {
+                    // Build your Docker image
+                    sh "docker build -t ${DOCKER_IMAGE} ."
+                }
+            }
+        }
+        stage('Test') {
+            steps {
+                echo 'Running Tests'
+                // Add commands to run your tests here
+            }
+        }
+        stage('Deploy') {
+            steps {
+                echo 'Deploying to Kubernetes'
+                script {
+                    // Use kubectl to deploy to Kubernetes
+                    sh "kubectl apply -f your-kubernetes-deployment.yaml"
+                }
+            }
+        }
+    }
+}
