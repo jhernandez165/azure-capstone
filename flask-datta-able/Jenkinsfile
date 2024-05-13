@@ -3,17 +3,26 @@ pipeline {
 
     environment {
         // Define environment variables here
-        DOCKER_IMAGE = 'flask-datta-able:latest'
+        DOCKER_IMAGE = 'tilin.azurecr.io/flask-datta-able:latest'
         REGISTRY = 'tilin.azurecr.io'
+        AZURE_CREDENTIALS = credentials('azure-service-principal')
     }
 
     stages {
+        stage('Login to Azure') {
+            steps {
+                script {
+                    sh 'az login --service-principal -u $AZURE_CREDENTIALS_USR -p $AZURE_CREDENTIALS_PSW --tenant 86d17c2d-b41c-4848-9165-6739ba6179f1'
+                }
+            }
+        }
+
         stage('Build') {
             steps {
                 echo 'Building Docker Image'
                 script {
                     // Build your Docker image
-                    sh 'docker build -t flask-datta-able:latest /Users/jonathanhernandez/capstone_TC/flask-datta-able'
+                    sh 'docker build -t $REGISTRY/$DOCKER_IMAGE .'
 
                 }
             }
@@ -29,10 +38,8 @@ pipeline {
                 echo 'Deploying to Kubernetes'
                 script {
                     // Use kubectl to deploy to Kubernetes
-                    sh '''
-                        kubectl apply -f flask-datta-able/manifest/deployment.yaml
-                        kubectl apply -f /Users/jonathanhernandez/capstone_TC/flask-datta-able/manifest/service.yaml
-                        '''
+                        sh 'kubectl apply -f flask-datta-able/manifest/'
+
                 }
             }
         }
