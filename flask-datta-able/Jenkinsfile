@@ -30,8 +30,7 @@ pipeline {
                 script {
                     // Use kubectl to deploy to Kubernetes
                     sh '''
-                        ls -l manifest/
-                        kubectl apply -f /Users/jonathanhernandez/capstone_TC/flask-datta-able/manifest/deployment.yaml
+                        kubectl apply -f flask-datta-able/manifest/deployment.yaml
                         kubectl apply -f /Users/jonathanhernandez/capstone_TC/flask-datta-able/manifest/service.yaml
                         '''
                 }
