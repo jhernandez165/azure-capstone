@@ -22,15 +22,9 @@ pipeline {
                 echo 'Building Docker Image'
                 script {
                     // Build your Docker image
-                    sh 'docker build -t $REGISTRY/$DOCKER_IMAGE .'
+                    sh 'docker build -t $REGISTRY/$DOCKER_IMAGE ./flask-datta-able'
 
                 }
-            }
-        }
-        stage('Test') {
-            steps {
-                echo 'Running Tests'
-                // Add commands to run your tests here
             }
         }
         stage('Deploy') {
