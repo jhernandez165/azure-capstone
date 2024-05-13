@@ -27,6 +27,14 @@ pipeline {
                 }
             }
         }
+        stage('Push Image') {
+            steps {
+                script {
+                    sh 'az acr login --name ${REGISTRY}'
+                    sh 'docker push $REGISTRY/$DOCKER_IMAGE'
+                }
+            }
+        }
         stage('Deploy') {
             steps {
                 echo 'Deploying to Kubernetes'
