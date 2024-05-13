@@ -29,7 +29,11 @@ pipeline {
                 echo 'Deploying to Kubernetes'
                 script {
                     // Use kubectl to deploy to Kubernetes
-                    sh "kubectl apply -f your-kubernetes-deployment.yaml"
+                    sh '''
+                        ls -l manifest/
+                        kubectl apply -f flask-datta-able/manifest/deployment.yaml
+                        kubectl apply -f flask-datta-able/manifest/service.yaml
+                        '''
                 }
             }
         }
